@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sportstech — PickUp Ranger℠</title>
+<meta name="theme-color" content="#fafaf9">
+<meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>
 (function(){
   try { document.documentElement.setAttribute('data-lang', localStorage.getItem('pickup_lang') || 'de'); }
@@ -19,7 +21,7 @@ function setLang(lang){
   document.documentElement.setAttribute('data-lang', lang);
   try { localStorage.setItem('pickup_lang', lang); } catch(_) {}
   document.querySelectorAll('[data-lang-toggle]').forEach(b => {
-    b.textContent = lang === 'de' ? '🌐 EN' : '🌐 DE';
+    b.textContent = lang === 'de' ? 'EN' : 'DE';
   });
   if (typeof render === 'function') render();
 }
@@ -29,424 +31,880 @@ function toggleLang(){
 }
 </script>
 <style>
+/* ════════════════════════════════════════════════════════════════════
+   Sportstech PickUp Ranger — internal CS console.
+   Light, calm, Sportstech red as primary action. Matches abholung.html.
+   ════════════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg: #09090b;
-  --bg-2: #0c0c0f;
-  --surface: rgba(16, 16, 22, 0.72);
-  --surface-solid: #0e0e12;
-  --surface-hover: rgba(22, 22, 30, 0.82);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-bright: rgba(255, 255, 255, 0.13);
-  --text: #e8e8ec;
-  --text-2: #b8b8c4;
-  --text-3: #71717a;
-  --amber: #d4af37;
-  --amber-dim: #b8962e;
-  --amber-glow: rgba(212, 175, 55, 0.12);
-  --red: #ef4444;
-  --red-light: rgba(239, 68, 68, 0.10);
-  --green: #22c55e;
-  --green-light: rgba(34, 197, 94, 0.10);
-  --blue: #3b82f6;
-  --blue-light: rgba(59, 130, 246, 0.10);
-  --violet: #8b5cf6;
-  --violet-light: rgba(139, 92, 246, 0.10);
-  --radius: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Syne', 'DM Sans', sans-serif;
-  --mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --bg:         #fafaf9;
+  --surface:    #ffffff;
+  --surface-2:  #f5f5f4;
+  --surface-3:  #f0efed;
+
+  --border:        #e7e5e4;
+  --border-strong: #d6d3d1;
+
+  --text:    #18181b;
+  --text-2:  #44403c;
+  --text-3:  #78716c;
+  --text-4:  #a8a29e;
+
+  /* Sportstech red */
+  --brand:        #e3000f;
+  --brand-2:      #b80009;
+  --brand-3:      #8a0008;
+  --brand-soft:   #fef2f3;
+  --brand-tint:   rgba(227, 0, 15, 0.08);
+  --brand-ring:   rgba(227, 0, 15, 0.18);
+
+  /* Status colors — muted, light */
+  --success:      #15803d;
+  --success-soft: #f0fdf4;
+  --warning:      #b45309;
+  --warning-soft: #fffbeb;
+  --error:        #b91c1c;
+  --error-soft:   #fef2f2;
+  --info:         #1d4ed8;
+  --info-soft:    #eff6ff;
+  --violet:       #6d28d9;
+  --violet-soft:  #f5f3ff;
+  --amber:        #a16207;
+  --amber-soft:   #fefce8;
+  --neutral:      #57534e;
+  --neutral-soft: #f5f5f4;
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: 'DM Mono', ui-monospace, "SF Mono", Menlo, monospace;
+
+  --r-sm: 8px;
+  --r:    12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.04);
+  --shadow:    0 1px 3px rgba(24, 24, 27, 0.06), 0 1px 2px rgba(24, 24, 27, 0.04);
+  --shadow-lg: 0 10px 30px -12px rgba(24, 24, 27, 0.18), 0 2px 6px rgba(24,24,27,0.05);
 }
-html { scroll-behavior: smooth; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   font-family: var(--font);
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  position: relative;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11", "ss01";
 }
-body::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.4;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-body::after {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background:
-    radial-gradient(800px circle at 12% 10%, rgba(212,175,55,0.06), transparent 60%),
-    radial-gradient(900px circle at 90% 80%, rgba(139,92,246,0.05), transparent 65%);
-}
+
 html[data-lang="en"] .t-de { display: none; }
 html[data-lang="de"] .t-en { display: none; }
 
-/* ── Topbar ── */
-.topbar {
-  position: relative; z-index: 5;
+::selection { background: var(--brand-ring); color: var(--text); }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: inset 0 -3px 0 var(--brand);
+  position: sticky; top: 0; z-index: 20;
+  backdrop-filter: saturate(180%) blur(10px);
+}
+.site-header-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 14px 24px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 28px; border-bottom: 1px solid rgba(255,255,255,0.09);
-  background: linear-gradient(180deg, rgba(34, 34, 48, 0.72) 0%, rgba(20, 20, 30, 0.62) 100%);
-  backdrop-filter: blur(48px) saturate(2);
-  -webkit-backdrop-filter: blur(48px) saturate(2);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.13), inset 0 -1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.36);
-  position: sticky; top: 0;
+  gap: 16px; flex-wrap: wrap;
 }
-.topbar-left, .topbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.tb-logo { display: inline-flex; align-items: baseline; gap: 8px; }
-.tb-brand { font-family: 'Montserrat', var(--font); font-weight: 800; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); }
-.tb-pulse { font-family: 'Syne', var(--font); font-weight: 700; color: var(--amber); font-size: 14px; letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 6px; }
-.tb-pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 8px var(--amber-glow); animation: pulse-dot 2s ease-in-out infinite; }
-@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-.tb-sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--text-3); text-transform: uppercase; margin-left: 4px; }
-.topbar-sep { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
-.back-link { color: var(--text-2); text-decoration: none; font-size: 13px; padding: 7px 12px; border-radius: 10px; transition: all 0.15s; }
-.back-link:hover { color: var(--amber); background: var(--amber-glow); }
-.module-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--amber); text-transform: uppercase; padding: 5px 11px; border: 1px solid var(--border-bright); border-radius: 6px; }
-.btn-sm { background: var(--surface-solid); color: var(--text-2); border: 1px solid var(--border); border-radius: 10px; padding: 7px 12px; font-size: 13px; font-family: var(--font); cursor: pointer; transition: all 0.15s; }
-.btn-sm:hover { color: var(--amber); border-color: var(--border-bright); }
-.btn-sm.primary { color: var(--amber); border-color: var(--amber-dim); background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.05)); font-weight: 600; }
-.btn-sm.primary:hover { background: var(--amber-glow); }
-
-/* ── Hero ── */
-.hero { padding: 36px 28px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); position: relative; z-index: 1; }
-.hero h1 { font-family: 'Syne', var(--font); font-weight: 800; font-size: 38px; letter-spacing: -0.01em; color: #fff; margin-bottom: 6px; }
-.hero-sub { font-size: 14px; color: var(--text-2); }
-
-/* ── Main ── */
-main { padding: 24px 28px 60px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-
-/* ── Stats ── */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
-.stat-card {
-  background: var(--surface-solid); border: 1px solid var(--border);
-  border-radius: var(--radius-xl); padding: 18px;
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.05);
+.brand-mark {
+  display: inline-flex; align-items: center; gap: 12px;
+  text-decoration: none;
 }
-.stat-card.tone-info { border-color: rgba(59,130,246,0.30); background: var(--blue-light); }
-.stat-card.tone-good { border-color: rgba(34,197,94,0.30); background: var(--green-light); }
-.stat-card.tone-warn { border-color: rgba(139,92,246,0.30); background: var(--violet-light); }
-.stat-card.tone-bad  { border-color: rgba(239,68,68,0.30); background: var(--red-light); }
-.stat-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text); text-transform: uppercase; margin-bottom: 8px; font-weight: 700; opacity: 0.85; }
-.stat-value { font-family: 'Syne', var(--font); font-weight: 700; font-size: 34px; line-height: 1; }
-.stat-value.info { color: var(--blue); }
-.stat-value.good { color: var(--green); }
-.stat-value.warn { color: var(--violet); }
-.stat-value.bad  { color: var(--red); }
+.brand-logo {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--brand); color: #fff;
+  width: 28px; height: 28px; border-radius: 6px;
+  font-weight: 800; font-size: 15px;
+  letter-spacing: -0.04em;
+}
+.brand-name {
+  font-weight: 700; font-size: 16px; color: var(--text);
+  letter-spacing: -0.015em; text-transform: uppercase;
+}
+.brand-name span.accent { color: var(--brand); }
+.brand-sub {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-3); letter-spacing: 0.10em;
+  text-transform: uppercase; padding-left: 14px;
+  border-left: 1px solid var(--border);
+  margin-left: 6px;
+}
+.header-actions { display: flex; align-items: center; gap: 10px; }
 
-/* ── Toolbar ── */
-.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
-.filter-chip { background: var(--surface-solid); color: var(--text-2); border: 1px solid var(--border); border-radius: 100px; padding: 7px 16px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
-.filter-chip:hover { color: var(--amber); border-color: var(--border-bright); }
-.filter-chip.active { background: var(--amber); color: #000; border-color: var(--amber); font-weight: 600; }
-.search-input { background: var(--surface-solid); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 9px 14px; font-size: 14px; font-family: var(--font); min-width: 240px; }
-.search-input:focus { outline: none; border-color: var(--amber-dim); box-shadow: 0 0 0 3px var(--amber-glow); }
+/* ── Buttons ────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 7px;
+  background: var(--surface);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 8px 14px;
+  font-size: 13.5px; font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { border-color: var(--border-strong); background: var(--surface-2); color: var(--text); }
+.btn:focus-visible { outline: 3px solid var(--brand-ring); outline-offset: 2px; }
+.btn.primary {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+  font-weight: 600;
+  box-shadow: 0 4px 14px -4px var(--brand-ring), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn.primary:hover {
+  background: var(--brand-2);
+  border-color: var(--brand-2);
+  color: #fff;
+  box-shadow: 0 8px 20px -6px var(--brand-ring), inset 0 1px 0 rgba(255,255,255,0.15);
+  transform: translateY(-1px);
+}
+.btn.primary:active { background: var(--brand-3); transform: translateY(0); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--text-3); }
+.btn.ghost:hover { background: var(--surface-2); color: var(--text); }
+.btn.danger:hover { color: var(--error); border-color: rgba(185,28,28,0.3); }
+.btn-sm { padding: 6px 10px; font-size: 12.5px; border-radius: var(--r-sm); }
+.btn-icon { padding: 6px; width: 32px; height: 32px; }
+.lang-btn {
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 100px; padding: 5px 11px;
+  font-family: var(--font); font-size: 12px; font-weight: 500;
+  color: var(--text-2); cursor: pointer;
+  letter-spacing: 0.04em; transition: all 0.15s;
+}
+.lang-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+
+/* ── Page wrap ──────────────────────────────────────────────────────── */
+.page {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+.hero { margin-bottom: 28px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--brand); margin-bottom: 14px;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-tint);
+}
+h1.title {
+  font-size: 30px; font-weight: 700; letter-spacing: -0.025em;
+  line-height: 1.15; color: var(--text);
+  margin-bottom: 8px;
+}
+.lede {
+  font-size: 15px; color: var(--text-2); line-height: 1.6;
+  max-width: 680px;
+}
+
+/* ── Stat cards ─────────────────────────────────────────────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+.stat::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--text-4);
+}
+.stat.info::before { background: var(--info); }
+.stat.success::before { background: var(--success); }
+.stat.violet::before { background: var(--violet); }
+.stat.warn::before { background: var(--error); }
+.stat-label {
+  font-size: 12px; color: var(--text-3); font-weight: 500;
+  margin-bottom: 8px; letter-spacing: 0;
+}
+.stat-value {
+  font-size: 30px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.03em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-sub {
+  font-size: 11px; color: var(--text-3); margin-top: 4px;
+  font-family: var(--mono);
+}
+
+/* ── Toolbar ────────────────────────────────────────────────────────── */
+.toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.tabs {
+  display: inline-flex; align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px;
+  box-shadow: var(--shadow-sm);
+}
+.tab {
+  padding: 6px 14px;
+  font-size: 13px; font-weight: 500;
+  color: var(--text-3);
+  border: 0; background: transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  background: var(--text);
+  color: #fff;
+  font-weight: 600;
+}
+.tab-count {
+  margin-left: 6px;
+  font-family: var(--mono); font-size: 11px;
+  padding: 1px 6px; border-radius: 10px;
+  background: rgba(255,255,255,0.18);
+  color: inherit;
+}
+.tab:not(.active) .tab-count {
+  background: var(--surface-3);
+  color: var(--text-3);
+}
+.search-wrap { position: relative; flex: 1; min-width: 220px; }
+.search-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 9px 14px 9px 36px;
+  font-size: 14px;
+  font-family: var(--font);
+  color: var(--text);
+  transition: all 0.15s;
+}
+.search-input:hover { border-color: var(--border-strong); }
+.search-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-tint);
+}
+.search-input::placeholder { color: var(--text-4); }
+.search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-4); pointer-events: none;
+}
 .toolbar .spacer { flex: 1; }
 
-/* ── Table ── */
-.table-wrap {
-  background: var(--surface-solid); border: 1px solid var(--border);
-  border-radius: var(--radius-xl); overflow: hidden;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
+/* ── Table card ─────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-thead { background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); }
-th { text-align: left; font-weight: 600; padding: 14px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text-3); text-transform: uppercase; }
-td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-tbody tr:hover { background: var(--surface-hover); }
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+thead {
+  background: var(--surface-2);
+}
+th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tbody tr { transition: background 0.1s; }
+tbody tr:hover { background: var(--brand-soft); }
 tbody tr:last-child td { border-bottom: 0; }
 
 .cust-name { font-weight: 500; color: var(--text); }
-.cust-meta { font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.cust-meta {
+  font-family: var(--mono); font-size: 11.5px; color: var(--text-3);
+  margin-top: 2px;
+  letter-spacing: 0.01em;
+}
+.ticket-pill {
+  display: inline-block;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--text-2); background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 2px 8px;
+  letter-spacing: 0.02em;
+}
 .token-pill {
-  font-family: var(--mono); font-size: 11px;
-  color: var(--text-2); background: var(--bg-2);
-  border: 1px solid var(--border); border-radius: 6px;
-  padding: 3px 8px; letter-spacing: 0.04em;
+  display: inline-block;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--brand-3); background: var(--brand-soft);
+  border: 1px solid var(--brand-ring);
+  border-radius: 6px; padding: 2px 8px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+.reason-cell {
+  max-width: 240px;
+  overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 11px; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
-.badge.issued    { background: var(--blue-light);   color: var(--blue);   border: 1px solid rgba(59,130,246,0.25); }
-.badge.opened    { background: var(--violet-light); color: var(--violet); border: 1px solid rgba(139,92,246,0.25); }
-.badge.confirmed { background: var(--green-light);  color: var(--green);  border: 1px solid rgba(34,197,94,0.25); }
-.badge.picked    { background: rgba(212,175,55,0.12); color: var(--amber); border: 1px solid rgba(212,175,55,0.30); }
-.badge.completed { background: rgba(82,82,91,0.30); color: var(--text-2); border: 1px solid rgba(82,82,91,0.40); }
-.badge.expired   { background: var(--red-light);    color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
-.badge.cancelled { background: rgba(82,82,91,0.30); color: var(--text-3); border: 1px solid rgba(82,82,91,0.30); }
-
-.row-action {
-  background: transparent; color: var(--text-3);
-  border: 1px solid var(--border); border-radius: 8px;
-  padding: 5px 10px; font-size: 12px; cursor: pointer;
-  font-family: var(--font); transition: all 0.15s;
-  margin-right: 4px;
+/* ── Status badges ──────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px 3px 7px;
+  border-radius: 100px;
+  font-family: var(--font);
+  font-size: 11.5px; font-weight: 500;
+  border: 1px solid transparent;
+  white-space: nowrap;
 }
-.row-action:hover { color: var(--amber); border-color: var(--border-bright); }
-.row-action.danger:hover { color: var(--red); border-color: rgba(239,68,68,0.3); }
+.badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; flex-shrink: 0;
+  opacity: 0.85;
+}
+.badge.issued    { background: var(--info-soft);    color: var(--info);    border-color: rgba(29, 78, 216, 0.18); }
+.badge.opened    { background: var(--violet-soft);  color: var(--violet);  border-color: rgba(109, 40, 217, 0.18); }
+.badge.confirmed { background: var(--success-soft); color: var(--success); border-color: rgba(21, 128, 61, 0.18); }
+.badge.picked    { background: var(--amber-soft);   color: var(--amber);   border-color: rgba(161, 98, 7, 0.18); }
+.badge.completed { background: var(--neutral-soft); color: var(--neutral); border-color: var(--border-strong); }
+.badge.expired   { background: var(--error-soft);   color: var(--error);   border-color: rgba(185, 28, 28, 0.18); }
+.badge.cancelled { background: var(--neutral-soft); color: var(--text-3);  border-color: var(--border); }
 
-/* ── Empty ── */
-.notice { background: var(--surface-solid); border: 1px dashed var(--border-bright); border-radius: var(--radius-xl); padding: 44px; text-align: center; color: var(--text-2); }
-.notice h2 { font-family: 'Syne', var(--font); color: var(--text); margin-bottom: 8px; font-size: 22px; }
-.notice .help { font-size: 13px; color: var(--text-3); margin-top: 14px; }
+/* ── Row actions ────────────────────────────────────────────────────── */
+.row-actions { display: inline-flex; gap: 4px; }
+.row-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text-3);
+  transition: all 0.15s;
+}
+.row-btn:hover { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+.row-btn:focus-visible { outline: 2px solid var(--brand-ring); outline-offset: 1px; }
+.row-btn.danger:hover { color: var(--error); border-color: rgba(185, 28, 28, 0.25); background: var(--error-soft); }
+.row-btn.brand:hover { color: var(--brand); border-color: var(--brand-ring); background: var(--brand-soft); }
+.row-btn svg { width: 16px; height: 16px; }
 
-/* ── Modal ── */
-.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 150; padding: 24px; backdrop-filter: blur(4px); }
-.modal-backdrop.show { display: flex; }
-.modal-card {
-  background: var(--surface-solid); border: 1px solid var(--border-bright);
-  border-radius: var(--radius-xl);
+/* ── Empty state ────────────────────────────────────────────────────── */
+.empty {
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--text-3);
+}
+.empty-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-4);
+}
+.empty-icon svg { width: 24px; height: 24px; }
+.empty-title {
+  font-size: 16px; font-weight: 600; color: var(--text);
+  margin-bottom: 4px;
+}
+.empty-sub { font-size: 13.5px; color: var(--text-3); max-width: 360px; margin: 0 auto; }
+
+/* ── Modal ──────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(24, 24, 27, 0.45);
+  backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 100; padding: 24px;
+}
+.modal-backdrop.show { display: flex; animation: fade-in 0.15s ease-out; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--surface);
+  border-radius: var(--r-xl);
   width: 100%; max-width: 560px;
   max-height: 90vh; display: flex; flex-direction: column;
   overflow: hidden;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 40px 120px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 40px 80px -20px rgba(24,24,27,0.4), 0 0 0 1px var(--border);
+  animation: slide-up 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.modal-head { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
-.modal-title { font-family: 'Syne', var(--font); font-weight: 700; font-size: 20px; color: var(--text); }
-.modal-sub { font-family: var(--mono); font-size: 12px; color: var(--text-3); letter-spacing: 0.05em; }
-.modal-close { margin-left: auto; background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; }
-.modal-close:hover { color: var(--amber); border-color: var(--border-bright); }
-.modal-body { flex: 1; overflow-y: auto; padding: 22px 24px; }
-.modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-head {
+  padding: 22px 24px 16px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px;
+}
+.modal-title {
+  font-size: 18px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.015em;
+}
+.modal-sub {
+  font-size: 13.5px; color: var(--text-3);
+  margin-top: 4px;
+}
+.modal-close {
+  background: transparent; border: 0;
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-3); cursor: pointer;
+  border-radius: var(--r-sm);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.modal-close:hover { background: var(--surface-2); color: var(--text); }
+.modal-body { padding: 8px 24px 4px; overflow-y: auto; }
+.modal-foot {
+  padding: 16px 24px 20px;
+  display: flex; gap: 10px; align-items: center;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
 .modal-foot .spacer { flex: 1; }
+.modal-status {
+  font-size: 12.5px; color: var(--error);
+  flex: 1;
+}
 
+/* ── Form ───────────────────────────────────────────────────────────── */
 .field { margin-bottom: 14px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
-.lbl { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; font-weight: 600; }
-input.txt, select.txt, textarea.txt {
-  width: 100%; background: var(--bg-2); color: var(--text);
-  border: 1px solid var(--border); border-radius: 12px;
-  padding: 11px 14px; font-size: 14px; font-family: var(--font);
+.field-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 14px;
 }
-input.txt:focus, select.txt:focus, textarea.txt:focus {
-  outline: none; border-color: var(--amber-dim); box-shadow: 0 0 0 3px var(--amber-glow);
+.lbl {
+  display: block;
+  font-size: 13px; font-weight: 500;
+  color: var(--text-2);
+  margin-bottom: 6px;
 }
-textarea.txt { resize: vertical; min-height: 70px; }
-.hint { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+.txt {
+  width: 100%;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+.txt:hover { border-color: var(--border-strong); }
+.txt:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-tint);
+}
+.txt::placeholder { color: var(--text-4); }
+.hint {
+  font-size: 12.5px; color: var(--text-3);
+  margin-top: 5px; line-height: 1.4;
+}
 
-/* ── Link result block ── */
+/* ── Link result (after token created) ──────────────────────────────── */
 .link-result {
-  border: 1px solid var(--amber-dim);
-  border-radius: var(--radius-lg);
-  background: var(--amber-glow);
-  padding: 16px; margin-bottom: 14px;
+  background: var(--success-soft);
+  border: 1px solid rgba(21, 128, 61, 0.20);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-bottom: 16px;
 }
-.link-result-label {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em;
-  color: var(--amber); text-transform: uppercase; margin-bottom: 8px;
-  font-weight: 700;
+.link-result-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13.5px; font-weight: 600;
+  color: var(--success);
+  margin-bottom: 10px;
 }
+.link-result-title svg { width: 16px; height: 16px; }
 .link-box {
-  display: flex; gap: 8px; align-items: center;
-  background: var(--bg-2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 8px 8px 8px 12px;
+  display: flex; gap: 8px; align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 4px 4px 4px 12px;
 }
 .link-input {
-  flex: 1; background: transparent; border: 0; color: var(--text);
-  font-family: var(--mono); font-size: 12px;
-  min-width: 0;
+  flex: 1; background: transparent; border: 0; outline: none;
+  color: var(--text);
+  font-family: var(--mono); font-size: 12.5px;
+  min-width: 0; padding: 8px 0;
 }
-.link-input:focus { outline: none; }
 .copy-btn {
-  background: var(--amber); color: #000; border: 0;
-  border-radius: 8px; padding: 7px 12px;
-  font-size: 12px; font-weight: 600; cursor: pointer;
-  font-family: var(--font); white-space: nowrap;
+  background: var(--text); color: #fff;
+  border: 0; border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12.5px; font-weight: 600;
+  cursor: pointer; font-family: var(--font);
+  white-space: nowrap;
+  transition: background 0.15s;
 }
-.copy-btn:hover { background: #e6c14a; }
+.copy-btn:hover { background: #000; }
+.link-meta {
+  font-size: 12px; color: var(--text-3);
+  margin-top: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+.link-meta code {
+  color: var(--brand-3); background: var(--brand-soft);
+  padding: 1px 6px; border-radius: 4px;
+  border: 1px solid var(--brand-ring);
+  font-family: var(--mono); font-size: 11.5px;
+}
 
-/* ── Toast ── */
+/* ── Intro / how-it-works ───────────────────────────────────────────── */
+.intro {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.intro-toggle {
+  width: 100%;
+  background: transparent; border: 0;
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 14px; font-weight: 500;
+  color: var(--text);
+  text-align: left;
+  transition: background 0.15s;
+}
+.intro-toggle:hover { background: var(--surface-2); }
+.intro-chevron {
+  width: 16px; height: 16px; color: var(--text-3);
+  transition: transform 0.2s;
+}
+.intro.open .intro-chevron { transform: rotate(180deg); }
+.intro-body {
+  padding: 8px 20px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.intro-body[hidden] { display: none; }
+.intro-body p { margin: 10px 0; }
+.intro-body h4 {
+  font-size: 12px; font-weight: 600;
+  color: var(--text); margin: 16px 0 6px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.intro-body ol, .intro-body ul { padding-left: 20px; margin: 6px 0 12px; }
+.intro-body li { margin: 5px 0; }
+.intro-body code {
+  font-family: var(--mono); font-size: 12px;
+  padding: 1px 6px; border-radius: 4px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--brand-3);
+}
+.intro-body strong { color: var(--text); }
+
+/* ── Toast ──────────────────────────────────────────────────────────── */
 #toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: var(--surface-solid); border: 1px solid var(--border-bright);
-  border-radius: 14px; padding: 12px 20px; font-size: 14px;
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--text); color: #fff;
+  border-radius: var(--r); padding: 11px 18px;
+  font-size: 13.5px; font-weight: 500;
   z-index: 200; opacity: 0; pointer-events: none;
   transition: opacity 0.2s, transform 0.2s;
-  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-lg);
+  display: inline-flex; align-items: center; gap: 8px;
 }
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
-#toast.success { border-color: rgba(34,197,94,0.5); color: var(--green); }
-#toast.error   { border-color: rgba(239,68,68,0.5); color: var(--red); }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast.success { background: var(--success); }
+#toast.error   { background: var(--error); }
+#toast svg { width: 16px; height: 16px; }
 
-/* ── Draft banner ── */
+/* ── Draft banner ───────────────────────────────────────────────────── */
 .draft-banner {
-  background: rgba(245,158,11,0.10);
-  border-bottom: 1px solid rgba(245,158,11,0.25);
-  color: #fbbf24; padding: 8px 16px;
+  background: var(--warning-soft);
+  border-bottom: 1px solid rgba(180, 83, 9, 0.20);
+  color: var(--warning);
+  padding: 7px 16px;
   font-family: var(--mono); font-size: 11px;
   text-align: center; letter-spacing: 0.10em;
   text-transform: uppercase;
 }
 
-/* ── Intro/info ── */
-.intro-card { margin: 0 0 22px; border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--surface-solid); overflow: hidden; }
-.intro-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; background: transparent; border: 0; color: var(--amber); font-family: var(--font); font-size: 14px; font-weight: 600; padding: 15px 20px; cursor: pointer; text-align: left; transition: background 0.15s; }
-.intro-toggle:hover { background: rgba(255,255,255,0.025); }
-.intro-chevron { font-size: 10px; color: var(--text-3); transition: transform 0.2s; }
-.intro-card.open .intro-chevron { transform: rotate(180deg); color: var(--amber); }
-.intro-body { padding: 4px 22px 20px; font-size: 14px; color: var(--text-2); line-height: 1.65; border-top: 1px solid var(--border); }
-.intro-body[hidden] { display: none; }
-.intro-body p { margin: 10px 0; }
-.intro-body h4 { font-size: 12px; color: var(--text); margin: 16px 0 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.10em; font-weight: 700; }
-.intro-body ol, .intro-body ul { padding-left: 22px; margin: 6px 0 12px; }
-.intro-body li { margin: 6px 0; }
-.intro-body code { font-family: var(--mono); font-size: 12px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--amber); }
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: 24px;
+}
+.site-footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  font-size: 12px; color: var(--text-3);
+  font-family: var(--mono); letter-spacing: 0.04em;
+}
 
+/* ── Mobile ─────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .topbar { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
   .field-row { grid-template-columns: 1fr; }
-  table { font-size: 12px; }
   th, td { padding: 10px 12px; }
+  .reason-cell { max-width: 160px; }
+  h1.title { font-size: 24px; }
+}
+@media (max-width: 560px) {
+  .page { padding: 24px 16px 60px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .brand-sub { display: none; }
+  .modal { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
 }
 </style>
 </head>
 <body>
 
 <div class="draft-banner">
-  <span class="t-de">Entwurf — keine echte GLS-Anbindung aktiv. Daten leben in localStorage.</span>
-  <span class="t-en">Draft — no live GLS integration. Data lives in localStorage.</span>
+  <span class="t-de">Entwurf · Daten leben aktuell nur im Browser (localStorage)</span>
+  <span class="t-en">Draft · Data currently lives only in browser (localStorage)</span>
 </div>
 
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="tb-logo">
-      <span class="tb-brand">Sportstech</span>
-      <span class="tb-pulse">PICKUP<span class="tb-pulse-dot"></span></span>
-      <span class="tb-sub">Support Intelligence</span>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand-mark" href="/">
+      <span class="brand-logo" aria-hidden="true">S</span>
+      <span class="brand-name">SPORTS<span class="accent">TECH</span></span>
+      <span class="brand-sub">PickUp Ranger℠</span>
+    </a>
+    <div class="header-actions">
+      <button class="btn" onclick="render()" title="${'Aktualisieren'}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+        <span class="t-de">Aktualisieren</span><span class="t-en">Refresh</span>
+      </button>
+      <button class="btn primary" onclick="openCreate()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        <span class="t-de">Einmal-Link erzeugen</span><span class="t-en">Create one-time link</span>
+      </button>
+      <button class="lang-btn" data-lang-toggle onclick="toggleLang()" aria-label="Language">EN</button>
     </div>
-    <div class="topbar-sep"></div>
-    <span class="module-tag">PickUp Ranger℠</span>
   </div>
-  <div class="topbar-right">
-    <button class="btn-sm" onclick="render()">↻ <span class="t-de">Aktualisieren</span><span class="t-en">Refresh</span></button>
-    <button class="btn-sm primary" onclick="openCreate()">＋ <span class="t-de">Einmal-Link erzeugen</span><span class="t-en">Create one-time link</span></button>
-    <button class="btn-sm" data-lang-toggle onclick="toggleLang()">🌐 EN</button>
-  </div>
-</div>
+</header>
 
-<div class="hero">
-  <h1>📦 <span class="t-de">PickUp Ranger</span><span class="t-en">PickUp Ranger</span><span style="font-size: 22px; color: var(--amber); vertical-align: super; margin-left: 6px;">℠</span></h1>
-  <div class="hero-sub">
-    <span class="t-de">Einmal-Links für GLS-Abholungen erzeugen, kopieren und Status verfolgen.</span>
-    <span class="t-en">Generate one-time GLS pickup links, copy them and track status.</span>
-  </div>
-</div>
+<main class="page">
 
-<main>
-  <div class="intro-card" id="intro">
-    <button class="intro-toggle" onclick="document.getElementById('intro').classList.toggle('open'); document.getElementById('intro-body').hidden = !document.getElementById('intro-body').hidden;">
+  <div class="hero">
+    <div class="eyebrow">
+      <span class="eyebrow-dot" aria-hidden="true"></span>
+      <span class="t-de">CS-Konsole · Einmalige Abholungen</span>
+      <span class="t-en">CS Console · One-time pickups</span>
+    </div>
+    <h1 class="title">
+      <span class="t-de">Sichere Einmal-Links für GLS-Abholungen.</span>
+      <span class="t-en">Secure one-time links for GLS pickups.</span>
+    </h1>
+    <p class="lede">
+      <span class="t-de">Erstelle persönliche Abhol-Links für einzelne Kunden, kopiere sie in deine Zendesk-Antwort, und verfolge den Status jeder Abholung — ohne Kunden-Login, ohne mehrfache Nutzung, ohne Risiko.</span>
+      <span class="t-en">Issue personal pickup links for individual customers, copy them into your Zendesk reply, and track the status of each pickup — no customer login, no reuse, no risk.</span>
+    </p>
+  </div>
+
+  <details class="intro" id="intro">
+    <summary class="intro-toggle">
       <span><span class="t-de">So funktioniert es</span><span class="t-en">How it works</span></span>
-      <span class="intro-chevron">▼</span>
-    </button>
-    <div class="intro-body" id="intro-body" hidden>
+      <svg class="intro-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="intro-body">
       <h4><span class="t-de">Ablauf</span><span class="t-en">Workflow</span></h4>
       <ol>
-        <li><span class="t-de">CS erzeugt einen Einmal-Link für den Kunden (Name, E-Mail, Ticket, Grund).</span><span class="t-en">CS creates a one-time link for the customer (name, email, ticket, reason).</span></li>
-        <li><span class="t-de">Der Link wird via Zendesk-Antwort verschickt — nie direkt vom Kunden anforderbar.</span><span class="t-en">The link is sent via Zendesk reply — never user-requestable.</span></li>
-        <li><span class="t-de">Der Kunde öffnet den Link, füllt Adresse und Zeitfenster aus und bestätigt.</span><span class="t-en">The customer opens the link, fills in address and slot, and confirms.</span></li>
+        <li><span class="t-de">CS erzeugt einen Einmal-Link für den Kunden (Name, E-Mail, Ticket, Grund).</span><span class="t-en">CS issues a one-time link for the customer (name, email, ticket, reason).</span></li>
+        <li><span class="t-de">Der Link wird über die Zendesk-Antwort verschickt — niemals direkt vom Kunden anforderbar.</span><span class="t-en">The link is sent via Zendesk reply — never user-requestable.</span></li>
+        <li><span class="t-de">Der Kunde öffnet den Link, füllt Adresse und Zeitfenster aus, bestätigt.</span><span class="t-en">The customer opens the link, fills in address and time window, confirms.</span></li>
         <li><span class="t-de">Server prüft Token (gültig, nicht abgelaufen, nicht eingelöst) und ruft die GLS-API.</span><span class="t-en">Server validates the token (valid, not expired, not used) and calls the GLS API.</span></li>
-        <li><span class="t-de">Nach Buchung wechselt der Link in den Tracking-Modus — keine zweite Buchung mehr möglich.</span><span class="t-en">After booking the link switches to tracking mode — no second booking possible.</span></li>
+        <li><span class="t-de">Nach Buchung schaltet der Link auf Tracking um — keine zweite Buchung möglich.</span><span class="t-en">After booking the link switches to tracking mode — no second booking possible.</span></li>
       </ol>
       <h4><span class="t-de">Sicherheit</span><span class="t-en">Security</span></h4>
       <ul>
-        <li><span class="t-de">Token mit hoher Entropie, serverseitig gespeichert, gebunden an Ticket & Kunde.</span><span class="t-en">High-entropy token, server-side, bound to ticket & customer.</span></li>
-        <li><span class="t-de">Single-Use erzwungen (Status-Maschine: ISSUED → CONFIRMED → PICKED_UP → COMPLETED).</span><span class="t-en">Single-use enforced (state machine: ISSUED → CONFIRMED → PICKED_UP → COMPLETED).</span></li>
-        <li><span class="t-de">Ablaufzeit (Standard 7 Tage), Rate-Limit pro IP, Audit-Log.</span><span class="t-en">Expiry (default 7 days), per-IP rate limit, audit log.</span></li>
-        <li><span class="t-de">Kein Login-Konto nötig — keine Wiederverwendbarkeit, keine Passwort-Risiken.</span><span class="t-en">No customer account needed — no reuse, no password risk.</span></li>
+        <li><span class="t-de">Hochentropie-Token, serverseitig gespeichert, an Ticket + Kunde gebunden.</span><span class="t-en">High-entropy token, stored server-side, bound to ticket + customer.</span></li>
+        <li><span class="t-de">Single-Use über Status-Maschine erzwungen: <code>ISSUED → CONFIRMED → PICKED_UP → COMPLETED</code>.</span><span class="t-en">Single-use enforced via state machine: <code>ISSUED → CONFIRMED → PICKED_UP → COMPLETED</code>.</span></li>
+        <li><span class="t-de">Standardlaufzeit 7 Tage, Rate-Limit pro IP, Audit-Log.</span><span class="t-en">Default 7-day expiry, per-IP rate limit, audit log.</span></li>
+        <li><span class="t-de">Kein Kunden-Account → kein Passwort-Risiko, keine Mehrfach-Nutzung.</span><span class="t-en">No customer account → no password risk, no reuse.</span></li>
       </ul>
-      <h4>API · TODO</h4>
-      <p><span class="t-de">Aktuell mockt diese Seite Token-Liste und Buchung im <code>localStorage</code>. Echte Implementation folgt:</span><span class="t-en">Currently this page mocks token list and booking in <code>localStorage</code>. Real implementation will follow:</span></p>
+      <h4><span class="t-de">Status &amp; API · TODO</span><span class="t-en">Status &amp; API · TODO</span></h4>
+      <p><span class="t-de">Aktuell mockt diese Seite Token-Liste und Buchung in <code>localStorage</code>. Reale Endpoints:</span><span class="t-en">Currently mocks token list and booking in <code>localStorage</code>. Real endpoints:</span></p>
       <ul>
-        <li><code>POST /api/gls-pickup/issue</code> — <span class="t-de">erzeugt Token</span><span class="t-en">issues token</span></li>
-        <li><code>GET /api/gls-pickup/list</code> — <span class="t-de">Status-Liste</span><span class="t-en">status list</span></li>
-        <li><code>POST /api/gls-pickup/book</code> — <span class="t-de">Kunden-Endpunkt, ruft GLS</span><span class="t-en">customer endpoint, calls GLS</span></li>
-        <li><code>GET /api/gls-pickup/status</code> — <span class="t-de">Webhook + Polling-Fallback</span><span class="t-en">webhook + polling fallback</span></li>
+        <li><code>POST /api/pickup/issue</code> — <span class="t-de">Token erzeugen (Upstash KV)</span><span class="t-en">issue token (Upstash KV)</span></li>
+        <li><code>GET /api/pickup/list</code> — <span class="t-de">Status-Liste</span><span class="t-en">status list</span></li>
+        <li><code>POST /api/pickup/book</code> — <span class="t-de">Kundenseite → GLS-API</span><span class="t-en">customer page → GLS API</span></li>
+        <li><code>GET /api/pickup/status</code> — <span class="t-de">Webhook + Polling-Fallback</span><span class="t-en">webhook + polling fallback</span></li>
       </ul>
+    </div>
+  </details>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input class="search-input" id="search" type="search" placeholder="" oninput="render()">
     </div>
   </div>
 
-  <div class="stats-grid" id="stats"></div>
-
-  <div class="toolbar">
-    <button class="filter-chip active" data-filter="all" onclick="setFilter('all')"><span class="t-de">Alle</span><span class="t-en">All</span></button>
-    <button class="filter-chip" data-filter="ISSUED" onclick="setFilter('ISSUED')"><span class="t-de">Offen</span><span class="t-en">Open</span></button>
-    <button class="filter-chip" data-filter="CONFIRMED" onclick="setFilter('CONFIRMED')"><span class="t-de">Gebucht</span><span class="t-en">Booked</span></button>
-    <button class="filter-chip" data-filter="PICKED_UP" onclick="setFilter('PICKED_UP')"><span class="t-de">Abgeholt</span><span class="t-en">Picked up</span></button>
-    <button class="filter-chip" data-filter="COMPLETED" onclick="setFilter('COMPLETED')"><span class="t-de">Abgeschlossen</span><span class="t-en">Done</span></button>
-    <button class="filter-chip" data-filter="EXPIRED" onclick="setFilter('EXPIRED')"><span class="t-de">Abgelaufen</span><span class="t-en">Expired</span></button>
-    <input class="search-input" id="search" type="search" placeholder="🔎 Name, E-Mail, Ticket, Token …" oninput="render()">
-    <div class="spacer"></div>
-  </div>
-
   <div id="table-host"></div>
+
 </main>
 
 <!-- ── Create modal ─────────────────────────────────────────────────── -->
 <div class="modal-backdrop" id="create-modal" onclick="if (event.target === this) closeCreate()">
-  <div class="modal-card">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="create-title">
     <div class="modal-head">
       <div>
-        <div class="modal-title"><span class="t-de">Einmal-Link erzeugen</span><span class="t-en">Create one-time link</span></div>
-        <div class="modal-sub">GLS · Single-Use Token</div>
+        <div class="modal-title" id="create-title">
+          <span class="t-de">Einmal-Link erzeugen</span>
+          <span class="t-en">Create one-time link</span>
+        </div>
+        <div class="modal-sub">
+          <span class="t-de">Persönlich, einmal nutzbar, automatisch ablaufend.</span>
+          <span class="t-en">Personal, single-use, auto-expiring.</span>
+        </div>
       </div>
-      <button class="modal-close" onclick="closeCreate()">×</button>
+      <button class="modal-close" onclick="closeCreate()" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
     </div>
     <div class="modal-body">
       <div id="link-result-host"></div>
 
       <div class="field-row">
         <div>
-          <label class="lbl" for="m-name"><span class="t-de">Kundenname</span><span class="t-en">Customer name</span></label>
-          <input class="txt" id="m-name" type="text" placeholder="Max Mustermann">
+          <label class="lbl" for="m-name">
+            <span class="t-de">Kundenname</span><span class="t-en">Customer name</span>
+          </label>
+          <input class="txt" id="m-name" type="text" placeholder="Max Mustermann" autocomplete="off">
         </div>
         <div>
-          <label class="lbl" for="m-email"><span class="t-de">Kunden-E-Mail</span><span class="t-en">Customer email</span></label>
-          <input class="txt" id="m-email" type="email" placeholder="max@example.com">
+          <label class="lbl" for="m-email">
+            <span class="t-de">Kunden-E-Mail</span><span class="t-en">Customer email</span>
+          </label>
+          <input class="txt" id="m-email" type="email" placeholder="max@example.com" autocomplete="off">
         </div>
       </div>
 
       <div class="field-row">
         <div>
           <label class="lbl" for="m-ticket">Zendesk-Ticket</label>
-          <input class="txt" id="m-ticket" type="text" placeholder="#412938">
+          <input class="txt" id="m-ticket" type="text" placeholder="#412938" autocomplete="off">
         </div>
         <div>
-          <label class="lbl" for="m-expiry"><span class="t-de">Gültig (Tage)</span><span class="t-en">Valid (days)</span></label>
+          <label class="lbl" for="m-expiry">
+            <span class="t-de">Gültig (Tage)</span><span class="t-en">Valid (days)</span>
+          </label>
           <input class="txt" id="m-expiry" type="number" value="7" min="1" max="30">
         </div>
       </div>
 
       <div class="field">
-        <label class="lbl" for="m-reason"><span class="t-de">Grund (intern)</span><span class="t-en">Reason (internal)</span></label>
-        <input class="txt" id="m-reason" type="text" placeholder="Defekt: Laufband S-Run">
-        <div class="hint"><span class="t-de">Erscheint nur intern + auf der Bestätigungs-Seite des Kunden.</span><span class="t-en">Shown internally + on the customer confirmation page.</span></div>
+        <label class="lbl" for="m-reason">
+          <span class="t-de">Grund (intern)</span><span class="t-en">Reason (internal)</span>
+        </label>
+        <input class="txt" id="m-reason" type="text" placeholder="Defekt: Laufband S-Run" autocomplete="off">
+        <div class="hint">
+          <span class="t-de">Erscheint nur intern und auf der Bestätigungs-Seite des Kunden.</span>
+          <span class="t-en">Shown internally and on the customer confirmation page.</span>
+        </div>
       </div>
     </div>
     <div class="modal-foot">
-      <span class="modal-sub" id="modal-status"></span>
-      <div class="spacer"></div>
-      <button class="btn-sm" onclick="closeCreate()"><span class="t-de">Schließen</span><span class="t-en">Close</span></button>
-      <button class="btn-sm primary" onclick="createLink()">✓ <span class="t-de">Token erzeugen</span><span class="t-en">Generate token</span></button>
+      <div class="modal-status" id="modal-status"></div>
+      <button class="btn" onclick="closeCreate()">
+        <span class="t-de">Schließen</span><span class="t-en">Close</span>
+      </button>
+      <button class="btn primary" onclick="createLink()">
+        <span class="t-de">Token erzeugen</span><span class="t-en">Generate token</span>
+      </button>
     </div>
   </div>
 </div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>SPORTSTECH · PickUp Ranger℠</span>
+    <span><span class="t-de">Interne CS-Konsole · nicht öffentlich</span><span class="t-en">Internal CS console · not public</span></span>
+  </div>
+</footer>
 
 <div id="toast"></div>
 
 <script>
 // ════════════════════════════════════════════════════════════════════════
-// DRAFT — mock layer. Replace marked sections with real API at the end.
-// Shares localStorage with abholung.html so flow is testable end-to-end.
+// DRAFT — mock layer, shares localStorage with abholung.html.
+// Replace marked sections with real API when GLS endpoint is available.
 // ════════════════════════════════════════════════════════════════════════
 
 const STORAGE_KEY = 'gls_pickup_tokens_draft';
 let filter = 'all';
+
+const I = {
+  copy:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`,
+  open:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>`,
+  cancel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>`,
+  next:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`,
+  inbox:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"/></svg>`,
+  check:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
+};
 
 function loadStore() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
@@ -454,9 +912,49 @@ function loadStore() {
 }
 function saveStore(s) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (_) {} }
 
-function toast(msg, kind='success') {
+(function seedIfEmpty(){
+  const store = loadStore();
+  if (Object.keys(store).length === 0) {
+    const now = Date.now();
+    store['DEMO-OPEN'] = {
+      status: 'ISSUED',
+      customer: { name: 'Max Mustermann', email: 'max@example.com' },
+      reason: 'Defekt: Laufband S-Run',
+      ticket: '#412938',
+      issuedAt: now - 3600_000,
+      expiresAt: now + 7 * 86400_000
+    };
+    store['DEMO-USED'] = {
+      status: 'CONFIRMED',
+      customer: { name: 'Anna Beispiel', email: 'anna@example.com' },
+      reason: 'Defekt: Rudergerät RX-Pro',
+      ticket: '#413001',
+      issuedAt: now - 2 * 86400_000,
+      expiresAt: now + 5 * 86400_000,
+      submittedAt: now - 86400_000,
+      booking: {
+        glsRef: '0123456789AB',
+        address: 'Musterstr. 12, 10115 Berlin',
+        phone: '+49 30 1234567',
+        slot: '2026-05-26 / 09:00–13:00',
+        confirmedAt: now - 86400_000 + 3600_000
+      }
+    };
+    store['DEMO-EXPIRED'] = {
+      status: 'ISSUED',
+      customer: { name: 'Test Ablauf', email: 'expired@example.com' },
+      reason: 'Defekt: Crosstrainer',
+      ticket: '#410001',
+      issuedAt: now - 30 * 86400_000,
+      expiresAt: now - 86400_000
+    };
+    saveStore(store);
+  }
+})();
+
+function toast(msg, kind='') {
   const el = document.getElementById('toast');
-  el.className = ''; el.textContent = msg;
+  el.className = ''; el.innerHTML = (kind === 'success' ? I.check : '') + ' ' + msg;
   void el.offsetWidth;
   el.className = 'show ' + kind;
   setTimeout(() => el.className = '', 2400);
@@ -464,8 +962,8 @@ function toast(msg, kind='success') {
 
 function setFilter(f) {
   filter = f;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === f));
-  render();
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.filter === f));
+  renderTable();
 }
 
 function effectiveStatus(rec) {
@@ -501,93 +999,133 @@ function escapeHtml(s) {
 }
 
 function customerLink(token) {
-  return `${location.origin}/abholung.html?t=${encodeURIComponent(token)}`;
+  return `${location.origin}/abholung?t=${encodeURIComponent(token)}`;
 }
 
-// ── Render ────────────────────────────────────────────────────────────────
+/* ── Render ──────────────────────────────────────────────────────── */
 function render() {
   const store = loadStore();
   const all = Object.entries(store).map(([token, rec]) => ({ token, ...rec, _eff: effectiveStatus(rec) }));
 
-  // Stats
-  const counts = { ISSUED:0, CONFIRMED:0, PICKED_UP:0, EXPIRED:0 };
+  const counts = { all: all.length, ISSUED:0, CONFIRMED:0, PICKED_UP:0, EXPIRED:0 };
   all.forEach(r => { if (counts[r._eff] !== undefined) counts[r._eff]++; });
+
   document.getElementById('stats').innerHTML = `
-    <div class="stat-card tone-info">
+    <div class="stat info">
       <div class="stat-label"><span class="t-de">Offene Links</span><span class="t-en">Open links</span></div>
-      <div class="stat-value info">${counts.ISSUED}</div>
+      <div class="stat-value">${counts.ISSUED}</div>
+      <div class="stat-sub"><span class="t-de">warten auf Buchung</span><span class="t-en">awaiting booking</span></div>
     </div>
-    <div class="stat-card tone-good">
+    <div class="stat success">
       <div class="stat-label"><span class="t-de">Gebuchte Abholungen</span><span class="t-en">Booked pickups</span></div>
-      <div class="stat-value good">${counts.CONFIRMED}</div>
+      <div class="stat-value">${counts.CONFIRMED}</div>
+      <div class="stat-sub"><span class="t-de">bestätigt von GLS</span><span class="t-en">confirmed by GLS</span></div>
     </div>
-    <div class="stat-card tone-warn">
-      <div class="stat-label"><span class="t-de">Abgeholt (heute)</span><span class="t-en">Picked up (today)</span></div>
-      <div class="stat-value warn">${counts.PICKED_UP}</div>
+    <div class="stat violet">
+      <div class="stat-label"><span class="t-de">Bereits abgeholt</span><span class="t-en">Already collected</span></div>
+      <div class="stat-value">${counts.PICKED_UP}</div>
+      <div class="stat-sub"><span class="t-de">unterwegs</span><span class="t-en">in transit</span></div>
     </div>
-    <div class="stat-card tone-bad">
+    <div class="stat warn">
       <div class="stat-label"><span class="t-de">Abgelaufen</span><span class="t-en">Expired</span></div>
-      <div class="stat-value bad">${counts.EXPIRED}</div>
+      <div class="stat-value">${counts.EXPIRED}</div>
+      <div class="stat-sub"><span class="t-de">nicht eingelöst</span><span class="t-en">never used</span></div>
     </div>`;
 
-  // Filter + search
+  document.getElementById('tabs').innerHTML = [
+    ['all',        tr('Alle','All')],
+    ['ISSUED',     tr('Offen','Open')],
+    ['CONFIRMED',  tr('Gebucht','Booked')],
+    ['PICKED_UP',  tr('Abgeholt','Picked up')],
+    ['COMPLETED',  tr('Abgeschlossen','Done')],
+    ['EXPIRED',    tr('Abgelaufen','Expired')]
+  ].map(([k, label]) => {
+    const cnt = k === 'all' ? counts.all : (counts[k] || 0);
+    return `<button class="tab${k===filter?' active':''}" data-filter="${k}" onclick="setFilter('${k}')" role="tab">
+      ${label}<span class="tab-count">${cnt}</span>
+    </button>`;
+  }).join('');
+
+  const sp = document.getElementById('search');
+  if (sp) sp.placeholder = tr('Name, E-Mail, Ticket oder Token suchen …', 'Search name, email, ticket or token …');
+
+  renderTable();
+}
+
+function renderTable() {
+  const store = loadStore();
   const q = (document.getElementById('search')?.value || '').toLowerCase();
-  let rows = all;
-  if (filter !== 'all') rows = rows.filter(r => r._eff === filter);
-  if (q) rows = rows.filter(r =>
-    (r.customer?.name || '').toLowerCase().includes(q) ||
-    (r.customer?.email || '').toLowerCase().includes(q) ||
-    (r.ticket || '').toLowerCase().includes(q) ||
-    r.token.toLowerCase().includes(q));
-  rows.sort((a,b) => (b.issuedAt||0) - (a.issuedAt||0));
+  let rows = Object.entries(store)
+    .map(([token, rec]) => ({ token, ...rec, _eff: effectiveStatus(rec) }))
+    .filter(r => filter === 'all' || r._eff === filter)
+    .filter(r => !q ||
+      (r.customer?.name || '').toLowerCase().includes(q) ||
+      (r.customer?.email || '').toLowerCase().includes(q) ||
+      (r.ticket || '').toLowerCase().includes(q) ||
+      r.token.toLowerCase().includes(q))
+    .sort((a,b) => (b.issuedAt||0) - (a.issuedAt||0));
 
   const host = document.getElementById('table-host');
   if (rows.length === 0) {
     host.innerHTML = `
-      <div class="notice">
-        <h2><span class="t-de">Keine Einträge</span><span class="t-en">No entries</span></h2>
-        <p><span class="t-de">Erzeuge oben rechts deinen ersten Einmal-Link.</span><span class="t-en">Create your first one-time link top-right.</span></p>
+      <div class="card">
+        <div class="empty">
+          <div class="empty-icon">${I.inbox}</div>
+          <div class="empty-title">
+            <span class="t-de">Keine Einträge</span><span class="t-en">Nothing here</span>
+          </div>
+          <div class="empty-sub">
+            <span class="t-de">Erzeuge oben rechts deinen ersten Einmal-Link, um zu starten.</span>
+            <span class="t-en">Create your first one-time link in the top-right to get going.</span>
+          </div>
+        </div>
       </div>`;
     return;
   }
 
   host.innerHTML = `
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th><span class="t-de">Kunde</span><span class="t-en">Customer</span></th>
-          <th>Ticket</th>
-          <th><span class="t-de">Grund</span><span class="t-en">Reason</span></th>
-          <th>Token</th>
-          <th><span class="t-de">Status</span><span class="t-en">Status</span></th>
-          <th><span class="t-de">Erstellt</span><span class="t-en">Created</span></th>
-          <th><span class="t-de">Aktionen</span><span class="t-en">Actions</span></th>
-        </tr></thead>
-        <tbody>
-          ${rows.map(r => `
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
             <tr>
-              <td>
-                <div class="cust-name">${escapeHtml(r.customer?.name || '–')}</div>
-                <div class="cust-meta">${escapeHtml(r.customer?.email || '')}</div>
-              </td>
-              <td><span class="cust-meta">${escapeHtml(r.ticket || '–')}</span></td>
-              <td>${escapeHtml(r.reason || '–')}</td>
-              <td><span class="token-pill">${escapeHtml(r.token)}</span></td>
-              <td><span class="badge ${statusClass(r._eff)}">${statusLabel(r._eff)}</span></td>
-              <td><span class="cust-meta">${fmtDate(r.issuedAt)}</span></td>
-              <td style="white-space:nowrap;">
-                <button class="row-action" onclick="copyLink('${r.token}')" title="${tr('Link kopieren','Copy link')}">📋</button>
-                ${r._eff === 'CONFIRMED' || r._eff === 'PICKED_UP' ? `<button class="row-action" onclick="advanceStatus('${r.token}')" title="${tr('Status simulieren','Simulate next status')}">⏭</button>` : ''}
-                <button class="row-action" onclick="openTracking('${r.token}')" title="${tr('Kunden-Ansicht öffnen','Open customer view')}">↗</button>
-                <button class="row-action danger" onclick="cancelToken('${r.token}')" title="${tr('Stornieren','Cancel')}">✕</button>
-              </td>
-            </tr>`).join('')}
-        </tbody>
-      </table>
+              <th><span class="t-de">Kunde</span><span class="t-en">Customer</span></th>
+              <th>Ticket</th>
+              <th><span class="t-de">Grund</span><span class="t-en">Reason</span></th>
+              <th>Token</th>
+              <th><span class="t-de">Status</span><span class="t-en">Status</span></th>
+              <th><span class="t-de">Erstellt</span><span class="t-en">Created</span></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>
+                  <div class="cust-name">${escapeHtml(r.customer?.name || '–')}</div>
+                  <div class="cust-meta">${escapeHtml(r.customer?.email || '')}</div>
+                </td>
+                <td><span class="ticket-pill">${escapeHtml(r.ticket || '–')}</span></td>
+                <td class="reason-cell" title="${escapeHtml(r.reason || '')}">${escapeHtml(r.reason || '–')}</td>
+                <td><span class="token-pill">${escapeHtml(r.token)}</span></td>
+                <td><span class="badge ${statusClass(r._eff)}">${statusLabel(r._eff)}</span></td>
+                <td><span class="cust-meta">${fmtDate(r.issuedAt)}</span></td>
+                <td>
+                  <div class="row-actions">
+                    <button class="row-btn brand" onclick="copyLink('${r.token}')" title="${tr('Link kopieren','Copy link')}" aria-label="${tr('Link kopieren','Copy link')}">${I.copy}</button>
+                    <button class="row-btn" onclick="openTracking('${r.token}')" title="${tr('Kunden-Ansicht öffnen','Open customer view')}" aria-label="${tr('Kunden-Ansicht öffnen','Open customer view')}">${I.open}</button>
+                    ${r._eff === 'CONFIRMED' || r._eff === 'PICKED_UP' ? `<button class="row-btn" onclick="advanceStatus('${r.token}')" title="${tr('Nächsten Status simulieren','Simulate next status')}" aria-label="next">${I.next}</button>` : ''}
+                    <button class="row-btn danger" onclick="cancelToken('${r.token}')" title="${tr('Stornieren','Cancel')}" aria-label="${tr('Stornieren','Cancel')}">${I.cancel}</button>
+                  </div>
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
     </div>`;
 }
 
-// ── Actions ───────────────────────────────────────────────────────────────
+/* ── Actions ─────────────────────────────────────────────────────── */
 function openCreate() {
   document.getElementById('create-modal').classList.add('show');
   document.getElementById('link-result-host').innerHTML = '';
@@ -614,14 +1152,12 @@ function createLink() {
   const days   = Math.max(1, Math.min(30, parseInt(document.getElementById('m-expiry').value || '7', 10)));
 
   if (!name || !email || !ticket) {
-    document.getElementById('modal-status').textContent = tr('Name, E-Mail und Ticket sind Pflicht.', 'Name, email and ticket are required.');
+    document.getElementById('modal-status').textContent =
+      tr('Name, E-Mail und Ticket sind Pflicht.', 'Name, email and ticket are required.');
     return;
   }
 
-  // TODO ─ API integration point ─────────────────────────────────────────
-  // POST /api/gls-pickup/issue { name, email, ticket, reason, days }
-  //   → server generates token + persists in KV
-  //   → returns { token, expiresAt }
+  // TODO ─ API: POST /api/pickup/issue { name, email, ticket, reason, days }
   const token = genToken();
   const now = Date.now();
   const store = loadStore();
@@ -633,57 +1169,68 @@ function createLink() {
     expiresAt: now + days * 86400_000
   };
   saveStore(store);
-  // ─────────────────────────────────────────────────────────────────────
 
   const link = customerLink(token);
   document.getElementById('link-result-host').innerHTML = `
     <div class="link-result">
-      <div class="link-result-label">✓ <span class="t-de">Einmal-Link bereit — bitte an den Kunden senden</span><span class="t-en">One-time link ready — send to customer</span></div>
-      <div class="link-box">
-        <input class="link-input" id="result-link" value="${escapeHtml(link)}" readonly onclick="this.select()">
-        <button class="copy-btn" onclick="copyText('${escapeHtml(link)}')"><span class="t-de">Kopieren</span><span class="t-en">Copy</span></button>
+      <div class="link-result-title">
+        ${I.check}
+        <span class="t-de">Einmal-Link bereit · jetzt an den Kunden senden</span>
+        <span class="t-en">One-time link ready · send to the customer</span>
       </div>
-      <div class="hint" style="margin-top:8px;">
-        <span class="t-de">Gültig bis</span><span class="t-en">Valid until</span>: ${fmtDate(now + days * 86400_000)} · Token: <code style="color:var(--amber);">${token}</code>
+      <div class="link-box">
+        <input class="link-input" value="${escapeHtml(link)}" readonly onclick="this.select()">
+        <button class="copy-btn" onclick="copyText('${escapeHtml(link)}')">
+          <span class="t-de">Kopieren</span><span class="t-en">Copy</span>
+        </button>
+      </div>
+      <div class="link-meta">
+        <span class="t-de">Gültig bis</span><span class="t-en">Valid until</span>: ${fmtDate(now + days * 86400_000)} · Token: <code>${token}</code>
       </div>
     </div>`;
-  toast(tr('Einmal-Link erzeugt.', 'One-time link created.'));
+  toast(tr('Einmal-Link erzeugt.','One-time link created.'), 'success');
   render();
 }
 
 function copyText(text) {
   navigator.clipboard.writeText(text).then(
-    () => toast(tr('In Zwischenablage kopiert.', 'Copied to clipboard.')),
-    () => toast(tr('Kopieren fehlgeschlagen.', 'Copy failed.'), 'error')
+    () => toast(tr('In Zwischenablage kopiert.','Copied to clipboard.'), 'success'),
+    () => toast(tr('Kopieren fehlgeschlagen.','Copy failed.'), 'error')
   );
 }
 function copyLink(token) { copyText(customerLink(token)); }
 function openTracking(token) { window.open(customerLink(token), '_blank', 'noopener'); }
 
 function cancelToken(token) {
-  if (!confirm(tr('Wirklich stornieren? Der Kunde kann den Link danach nicht mehr verwenden.', 'Really cancel? The customer will no longer be able to use the link.'))) return;
-  // TODO ─ API: POST /api/gls-pickup/cancel { token } ────────────────────
+  if (!confirm(tr('Wirklich stornieren? Der Kunde kann den Link danach nicht mehr verwenden.',
+                  'Really cancel? The customer will no longer be able to use the link.'))) return;
+  // TODO ─ API: POST /api/pickup/cancel { token }
   const store = loadStore();
   if (!store[token]) return;
   store[token].status = 'CANCELLED';
   saveStore(store);
-  // ─────────────────────────────────────────────────────────────────────
-  toast(tr('Storniert.', 'Cancelled.'));
+  toast(tr('Storniert.','Cancelled.'), 'success');
   render();
 }
 
-// Demo helper: progress CONFIRMED → PICKED_UP → COMPLETED for testing
 function advanceStatus(token) {
   const store = loadStore();
   const r = store[token]; if (!r) return;
   if (r.status === 'CONFIRMED') r.status = 'PICKED_UP';
   else if (r.status === 'PICKED_UP') r.status = 'COMPLETED';
   saveStore(store);
-  toast(tr('Status simuliert.', 'Status simulated.'));
+  toast(tr('Status simuliert.','Status simulated.'), 'success');
   render();
 }
 
-// Boot
+/* ── Intro toggle ────────────────────────────────────────────────── */
+document.addEventListener('toggle', e => {
+  if (e.target.id === 'intro') {
+    e.target.classList.toggle('open', e.target.open);
+  }
+}, true);
+
+/* ── Boot ────────────────────────────────────────────────────────── */
 window.addEventListener('DOMContentLoaded', render);
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeCreate();
