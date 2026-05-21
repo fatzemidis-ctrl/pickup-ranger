@@ -1,0 +1,10 @@
+{
+  "name": "pickup-ranger",
+  "version": "0.2.0",
+  "description": "Sportstech PickUp Ranger — einmalige GLS-Abholungen via persönlichem Token-Link.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

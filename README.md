@@ -23,12 +23,35 @@ danach den Tracking-Status über denselben Link.
 
 ## Status
 
-**Entwurf.** Persistenz läuft aktuell in `localStorage` pro Browser (Demo-Modus).
-Vor Go-Live wird angedockt:
+**Phase 1 (Zendesk-Macro-Automatisierung):** ✅ implementiert.
+Setup-Anleitung: [`docs/zendesk-setup.md`](docs/zendesk-setup.md)
 
-- **Token-Store**: Upstash KV (REST) — Tokens, Status, Audit-Log serverseitig
+- `api/pickup/issue.js` — Webhook-Endpoint für Zendesk-Trigger, erzeugt Token,
+  schreibt in Upstash KV, postet öffentliche Antwort ans Ticket
+- `api/_lib/kv.js` — Upstash REST-Helper (kein `@vercel/kv`-Import)
+- `api/_lib/zendesk.js` — Zendesk-API-Client (Comments, Tags)
+
+**Phase 2 (geplant):** Buchungs-Endpoint + Liste + Cancel
+- `api/pickup/book.js` — Kundenseite ruft auf, validiert Token, ruft GLS-API
+- `api/pickup/get.js` — Kundenseite holt Token-State
+- `api/pickup/list.js` + `api/pickup/cancel.js` — interne Konsole
+- HTML-Seiten von `localStorage`-Mock auf `fetch`-Calls umstellen
+- Auth-Gate für die interne Konsole
+
+**Offen / extern:**
+
 - **GLS-API**: offizieller Endpoint für Abhol-Buchungen (Anfrage bei GLS läuft)
-- **Auth**: einfacher CS-Login-Gate für `PickUp-Ranger.html` (PULSE-Schema)
+
+## Env-Vars (Vercel)
+
+| Variable | Wofür |
+|---|---|
+| `ZENDESK_SUBDOMAIN` | `sportstech` |
+| `ZENDESK_EMAIL` | E-Mail des Zendesk-API-Accounts |
+| `ZENDESK_TOKEN` | Zendesk-API-Token |
+| `ZENDESK_WEBHOOK_SECRET` | Shared Secret zwischen Zendesk-Trigger und unserem Endpoint |
+| `KV_REST_API_URL` | Upstash KV — von Vercel automatisch gesetzt |
+| `KV_REST_API_TOKEN` | Upstash KV — von Vercel automatisch gesetzt |
 
 ## Lokal entwickeln
 
