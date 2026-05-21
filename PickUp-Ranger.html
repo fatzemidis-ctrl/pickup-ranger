@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sportstech — PickUp Ranger℠</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script>
+(function(){
+  try { document.documentElement.setAttribute('data-lang', localStorage.getItem('pickup_lang') || 'de'); }
+  catch(_) { document.documentElement.setAttribute('data-lang', 'de'); }
+})();
+function tr(de, en){
+  return (document.documentElement.getAttribute('data-lang')||'de') === 'en' ? en : de;
+}
+function setLang(lang){
+  document.documentElement.setAttribute('data-lang', lang);
+  try { localStorage.setItem('pickup_lang', lang); } catch(_) {}
+  document.querySelectorAll('[data-lang-toggle]').forEach(b => {
+    b.textContent = lang === 'de' ? '🌐 EN' : '🌐 DE';
+  });
+  if (typeof render === 'function') render();
+}
+function toggleLang(){
+  const cur = document.documentElement.getAttribute('data-lang') || 'de';
+  setLang(cur === 'de' ? 'en' : 'de');
+}
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #09090b;
+  --bg-2: #0c0c0f;
+  --surface: rgba(16, 16, 22, 0.72);
+  --surface-solid: #0e0e12;
+  --surface-hover: rgba(22, 22, 30, 0.82);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.13);
+  --text: #e8e8ec;
+  --text-2: #b8b8c4;
+  --text-3: #71717a;
+  --amber: #d4af37;
+  --amber-dim: #b8962e;
+  --amber-glow: rgba(212, 175, 55, 0.12);
+  --red: #ef4444;
+  --red-light: rgba(239, 68, 68, 0.10);
+  --green: #22c55e;
+  --green-light: rgba(34, 197, 94, 0.10);
+  --blue: #3b82f6;
+  --blue-light: rgba(59, 130, 246, 0.10);
+  --violet: #8b5cf6;
+  --violet-light: rgba(139, 92, 246, 0.10);
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Syne', 'DM Sans', sans-serif;
+  --mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(800px circle at 12% 10%, rgba(212,175,55,0.06), transparent 60%),
+    radial-gradient(900px circle at 90% 80%, rgba(139,92,246,0.05), transparent 65%);
+}
+html[data-lang="en"] .t-de { display: none; }
+html[data-lang="de"] .t-en { display: none; }
+
+/* ── Topbar ── */
+.topbar {
+  position: relative; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; border-bottom: 1px solid rgba(255,255,255,0.09);
+  background: linear-gradient(180deg, rgba(34, 34, 48, 0.72) 0%, rgba(20, 20, 30, 0.62) 100%);
+  backdrop-filter: blur(48px) saturate(2);
+  -webkit-backdrop-filter: blur(48px) saturate(2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.13), inset 0 -1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.36);
+  position: sticky; top: 0;
+}
+.topbar-left, .topbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.tb-logo { display: inline-flex; align-items: baseline; gap: 8px; }
+.tb-brand { font-family: 'Montserrat', var(--font); font-weight: 800; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); }
+.tb-pulse { font-family: 'Syne', var(--font); font-weight: 700; color: var(--amber); font-size: 14px; letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 6px; }
+.tb-pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 8px var(--amber-glow); animation: pulse-dot 2s ease-in-out infinite; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.tb-sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--text-3); text-transform: uppercase; margin-left: 4px; }
+.topbar-sep { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+.back-link { color: var(--text-2); text-decoration: none; font-size: 13px; padding: 7px 12px; border-radius: 10px; transition: all 0.15s; }
+.back-link:hover { color: var(--amber); background: var(--amber-glow); }
+.module-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--amber); text-transform: uppercase; padding: 5px 11px; border: 1px solid var(--border-bright); border-radius: 6px; }
+.btn-sm { background: var(--surface-solid); color: var(--text-2); border: 1px solid var(--border); border-radius: 10px; padding: 7px 12px; font-size: 13px; font-family: var(--font); cursor: pointer; transition: all 0.15s; }
+.btn-sm:hover { color: var(--amber); border-color: var(--border-bright); }
+.btn-sm.primary { color: var(--amber); border-color: var(--amber-dim); background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.05)); font-weight: 600; }
+.btn-sm.primary:hover { background: var(--amber-glow); }
+
+/* ── Hero ── */
+.hero { padding: 36px 28px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); position: relative; z-index: 1; }
+.hero h1 { font-family: 'Syne', var(--font); font-weight: 800; font-size: 38px; letter-spacing: -0.01em; color: #fff; margin-bottom: 6px; }
+.hero-sub { font-size: 14px; color: var(--text-2); }
+
+/* ── Main ── */
+main { padding: 24px 28px 60px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* ── Stats ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+.stat-card {
+  background: var(--surface-solid); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 18px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.stat-card.tone-info { border-color: rgba(59,130,246,0.30); background: var(--blue-light); }
+.stat-card.tone-good { border-color: rgba(34,197,94,0.30); background: var(--green-light); }
+.stat-card.tone-warn { border-color: rgba(139,92,246,0.30); background: var(--violet-light); }
+.stat-card.tone-bad  { border-color: rgba(239,68,68,0.30); background: var(--red-light); }
+.stat-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text); text-transform: uppercase; margin-bottom: 8px; font-weight: 700; opacity: 0.85; }
+.stat-value { font-family: 'Syne', var(--font); font-weight: 700; font-size: 34px; line-height: 1; }
+.stat-value.info { color: var(--blue); }
+.stat-value.good { color: var(--green); }
+.stat-value.warn { color: var(--violet); }
+.stat-value.bad  { color: var(--red); }
+
+/* ── Toolbar ── */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.filter-chip { background: var(--surface-solid); color: var(--text-2); border: 1px solid var(--border); border-radius: 100px; padding: 7px 16px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.filter-chip:hover { color: var(--amber); border-color: var(--border-bright); }
+.filter-chip.active { background: var(--amber); color: #000; border-color: var(--amber); font-weight: 600; }
+.search-input { background: var(--surface-solid); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 9px 14px; font-size: 14px; font-family: var(--font); min-width: 240px; }
+.search-input:focus { outline: none; border-color: var(--amber-dim); box-shadow: 0 0 0 3px var(--amber-glow); }
+.toolbar .spacer { flex: 1; }
+
+/* ── Table ── */
+.table-wrap {
+  background: var(--surface-solid); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); overflow: hidden;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead { background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); }
+th { text-align: left; font-weight: 600; padding: 14px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text-3); text-transform: uppercase; }
+td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:hover { background: var(--surface-hover); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.cust-name { font-weight: 500; color: var(--text); }
+.cust-meta { font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.token-pill {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-2); background: var(--bg-2);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 3px 8px; letter-spacing: 0.04em;
+}
+
+.badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 11px; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+.badge.issued    { background: var(--blue-light);   color: var(--blue);   border: 1px solid rgba(59,130,246,0.25); }
+.badge.opened    { background: var(--violet-light); color: var(--violet); border: 1px solid rgba(139,92,246,0.25); }
+.badge.confirmed { background: var(--green-light);  color: var(--green);  border: 1px solid rgba(34,197,94,0.25); }
+.badge.picked    { background: rgba(212,175,55,0.12); color: var(--amber); border: 1px solid rgba(212,175,55,0.30); }
+.badge.completed { background: rgba(82,82,91,0.30); color: var(--text-2); border: 1px solid rgba(82,82,91,0.40); }
+.badge.expired   { background: var(--red-light);    color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
+.badge.cancelled { background: rgba(82,82,91,0.30); color: var(--text-3); border: 1px solid rgba(82,82,91,0.30); }
+
+.row-action {
+  background: transparent; color: var(--text-3);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 5px 10px; font-size: 12px; cursor: pointer;
+  font-family: var(--font); transition: all 0.15s;
+  margin-right: 4px;
+}
+.row-action:hover { color: var(--amber); border-color: var(--border-bright); }
+.row-action.danger:hover { color: var(--red); border-color: rgba(239,68,68,0.3); }
+
+/* ── Empty ── */
+.notice { background: var(--surface-solid); border: 1px dashed var(--border-bright); border-radius: var(--radius-xl); padding: 44px; text-align: center; color: var(--text-2); }
+.notice h2 { font-family: 'Syne', var(--font); color: var(--text); margin-bottom: 8px; font-size: 22px; }
+.notice .help { font-size: 13px; color: var(--text-3); margin-top: 14px; }
+
+/* ── Modal ── */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 150; padding: 24px; backdrop-filter: blur(4px); }
+.modal-backdrop.show { display: flex; }
+.modal-card {
+  background: var(--surface-solid); border: 1px solid var(--border-bright);
+  border-radius: var(--radius-xl);
+  width: 100%; max-width: 560px;
+  max-height: 90vh; display: flex; flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 40px 120px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.modal-head { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+.modal-title { font-family: 'Syne', var(--font); font-weight: 700; font-size: 20px; color: var(--text); }
+.modal-sub { font-family: var(--mono); font-size: 12px; color: var(--text-3); letter-spacing: 0.05em; }
+.modal-close { margin-left: auto; background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; }
+.modal-close:hover { color: var(--amber); border-color: var(--border-bright); }
+.modal-body { flex: 1; overflow-y: auto; padding: 22px 24px; }
+.modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+.modal-foot .spacer { flex: 1; }
+
+.field { margin-bottom: 14px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.lbl { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; font-weight: 600; }
+input.txt, select.txt, textarea.txt {
+  width: 100%; background: var(--bg-2); color: var(--text);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 11px 14px; font-size: 14px; font-family: var(--font);
+}
+input.txt:focus, select.txt:focus, textarea.txt:focus {
+  outline: none; border-color: var(--amber-dim); box-shadow: 0 0 0 3px var(--amber-glow);
+}
+textarea.txt { resize: vertical; min-height: 70px; }
+.hint { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+
+/* ── Link result block ── */
+.link-result {
+  border: 1px solid var(--amber-dim);
+  border-radius: var(--radius-lg);
+  background: var(--amber-glow);
+  padding: 16px; margin-bottom: 14px;
+}
+.link-result-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em;
+  color: var(--amber); text-transform: uppercase; margin-bottom: 8px;
+  font-weight: 700;
+}
+.link-box {
+  display: flex; gap: 8px; align-items: center;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 8px 8px 12px;
+}
+.link-input {
+  flex: 1; background: transparent; border: 0; color: var(--text);
+  font-family: var(--mono); font-size: 12px;
+  min-width: 0;
+}
+.link-input:focus { outline: none; }
+.copy-btn {
+  background: var(--amber); color: #000; border: 0;
+  border-radius: 8px; padding: 7px 12px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: var(--font); white-space: nowrap;
+}
+.copy-btn:hover { background: #e6c14a; }
+
+/* ── Toast ── */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--surface-solid); border: 1px solid var(--border-bright);
+  border-radius: 14px; padding: 12px 20px; font-size: 14px;
+  z-index: 200; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  backdrop-filter: blur(20px);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+#toast.success { border-color: rgba(34,197,94,0.5); color: var(--green); }
+#toast.error   { border-color: rgba(239,68,68,0.5); color: var(--red); }
+
+/* ── Draft banner ── */
+.draft-banner {
+  background: rgba(245,158,11,0.10);
+  border-bottom: 1px solid rgba(245,158,11,0.25);
+  color: #fbbf24; padding: 8px 16px;
+  font-family: var(--mono); font-size: 11px;
+  text-align: center; letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+/* ── Intro/info ── */
+.intro-card { margin: 0 0 22px; border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--surface-solid); overflow: hidden; }
+.intro-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; background: transparent; border: 0; color: var(--amber); font-family: var(--font); font-size: 14px; font-weight: 600; padding: 15px 20px; cursor: pointer; text-align: left; transition: background 0.15s; }
+.intro-toggle:hover { background: rgba(255,255,255,0.025); }
+.intro-chevron { font-size: 10px; color: var(--text-3); transition: transform 0.2s; }
+.intro-card.open .intro-chevron { transform: rotate(180deg); color: var(--amber); }
+.intro-body { padding: 4px 22px 20px; font-size: 14px; color: var(--text-2); line-height: 1.65; border-top: 1px solid var(--border); }
+.intro-body[hidden] { display: none; }
+.intro-body p { margin: 10px 0; }
+.intro-body h4 { font-size: 12px; color: var(--text); margin: 16px 0 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.10em; font-weight: 700; }
+.intro-body ol, .intro-body ul { padding-left: 22px; margin: 6px 0 12px; }
+.intro-body li { margin: 6px 0; }
+.intro-body code { font-family: var(--mono); font-size: 12px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--amber); }
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .field-row { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  th, td { padding: 10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="draft-banner">
+  <span class="t-de">Entwurf — keine echte GLS-Anbindung aktiv. Daten leben in localStorage.</span>
+  <span class="t-en">Draft — no live GLS integration. Data lives in localStorage.</span>
+</div>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="tb-logo">
+      <span class="tb-brand">Sportstech</span>
+      <span class="tb-pulse">PICKUP<span class="tb-pulse-dot"></span></span>
+      <span class="tb-sub">Support Intelligence</span>
+    </div>
+    <div class="topbar-sep"></div>
+    <span class="module-tag">PickUp Ranger℠</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-sm" onclick="render()">↻ <span class="t-de">Aktualisieren</span><span class="t-en">Refresh</span></button>
+    <button class="btn-sm primary" onclick="openCreate()">＋ <span class="t-de">Einmal-Link erzeugen</span><span class="t-en">Create one-time link</span></button>
+    <button class="btn-sm" data-lang-toggle onclick="toggleLang()">🌐 EN</button>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>📦 <span class="t-de">PickUp Ranger</span><span class="t-en">PickUp Ranger</span><span style="font-size: 22px; color: var(--amber); vertical-align: super; margin-left: 6px;">℠</span></h1>
+  <div class="hero-sub">
+    <span class="t-de">Einmal-Links für GLS-Abholungen erzeugen, kopieren und Status verfolgen.</span>
+    <span class="t-en">Generate one-time GLS pickup links, copy them and track status.</span>
+  </div>
+</div>
+
+<main>
+  <div class="intro-card" id="intro">
+    <button class="intro-toggle" onclick="document.getElementById('intro').classList.toggle('open'); document.getElementById('intro-body').hidden = !document.getElementById('intro-body').hidden;">
+      <span><span class="t-de">So funktioniert es</span><span class="t-en">How it works</span></span>
+      <span class="intro-chevron">▼</span>
+    </button>
+    <div class="intro-body" id="intro-body" hidden>
+      <h4><span class="t-de">Ablauf</span><span class="t-en">Workflow</span></h4>
+      <ol>
+        <li><span class="t-de">CS erzeugt einen Einmal-Link für den Kunden (Name, E-Mail, Ticket, Grund).</span><span class="t-en">CS creates a one-time link for the customer (name, email, ticket, reason).</span></li>
+        <li><span class="t-de">Der Link wird via Zendesk-Antwort verschickt — nie direkt vom Kunden anforderbar.</span><span class="t-en">The link is sent via Zendesk reply — never user-requestable.</span></li>
+        <li><span class="t-de">Der Kunde öffnet den Link, füllt Adresse und Zeitfenster aus und bestätigt.</span><span class="t-en">The customer opens the link, fills in address and slot, and confirms.</span></li>
+        <li><span class="t-de">Server prüft Token (gültig, nicht abgelaufen, nicht eingelöst) und ruft die GLS-API.</span><span class="t-en">Server validates the token (valid, not expired, not used) and calls the GLS API.</span></li>
+        <li><span class="t-de">Nach Buchung wechselt der Link in den Tracking-Modus — keine zweite Buchung mehr möglich.</span><span class="t-en">After booking the link switches to tracking mode — no second booking possible.</span></li>
+      </ol>
+      <h4><span class="t-de">Sicherheit</span><span class="t-en">Security</span></h4>
+      <ul>
+        <li><span class="t-de">Token mit hoher Entropie, serverseitig gespeichert, gebunden an Ticket & Kunde.</span><span class="t-en">High-entropy token, server-side, bound to ticket & customer.</span></li>
+        <li><span class="t-de">Single-Use erzwungen (Status-Maschine: ISSUED → CONFIRMED → PICKED_UP → COMPLETED).</span><span class="t-en">Single-use enforced (state machine: ISSUED → CONFIRMED → PICKED_UP → COMPLETED).</span></li>
+        <li><span class="t-de">Ablaufzeit (Standard 7 Tage), Rate-Limit pro IP, Audit-Log.</span><span class="t-en">Expiry (default 7 days), per-IP rate limit, audit log.</span></li>
+        <li><span class="t-de">Kein Login-Konto nötig — keine Wiederverwendbarkeit, keine Passwort-Risiken.</span><span class="t-en">No customer account needed — no reuse, no password risk.</span></li>
+      </ul>
+      <h4>API · TODO</h4>
+      <p><span class="t-de">Aktuell mockt diese Seite Token-Liste und Buchung im <code>localStorage</code>. Echte Implementation folgt:</span><span class="t-en">Currently this page mocks token list and booking in <code>localStorage</code>. Real implementation will follow:</span></p>
+      <ul>
+        <li><code>POST /api/gls-pickup/issue</code> — <span class="t-de">erzeugt Token</span><span class="t-en">issues token</span></li>
+        <li><code>GET /api/gls-pickup/list</code> — <span class="t-de">Status-Liste</span><span class="t-en">status list</span></li>
+        <li><code>POST /api/gls-pickup/book</code> — <span class="t-de">Kunden-Endpunkt, ruft GLS</span><span class="t-en">customer endpoint, calls GLS</span></li>
+        <li><code>GET /api/gls-pickup/status</code> — <span class="t-de">Webhook + Polling-Fallback</span><span class="t-en">webhook + polling fallback</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stats-grid" id="stats"></div>
+
+  <div class="toolbar">
+    <button class="filter-chip active" data-filter="all" onclick="setFilter('all')"><span class="t-de">Alle</span><span class="t-en">All</span></button>
+    <button class="filter-chip" data-filter="ISSUED" onclick="setFilter('ISSUED')"><span class="t-de">Offen</span><span class="t-en">Open</span></button>
+    <button class="filter-chip" data-filter="CONFIRMED" onclick="setFilter('CONFIRMED')"><span class="t-de">Gebucht</span><span class="t-en">Booked</span></button>
+    <button class="filter-chip" data-filter="PICKED_UP" onclick="setFilter('PICKED_UP')"><span class="t-de">Abgeholt</span><span class="t-en">Picked up</span></button>
+    <button class="filter-chip" data-filter="COMPLETED" onclick="setFilter('COMPLETED')"><span class="t-de">Abgeschlossen</span><span class="t-en">Done</span></button>
+    <button class="filter-chip" data-filter="EXPIRED" onclick="setFilter('EXPIRED')"><span class="t-de">Abgelaufen</span><span class="t-en">Expired</span></button>
+    <input class="search-input" id="search" type="search" placeholder="🔎 Name, E-Mail, Ticket, Token …" oninput="render()">
+    <div class="spacer"></div>
+  </div>
+
+  <div id="table-host"></div>
+</main>
+
+<!-- ── Create modal ─────────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="create-modal" onclick="if (event.target === this) closeCreate()">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title"><span class="t-de">Einmal-Link erzeugen</span><span class="t-en">Create one-time link</span></div>
+        <div class="modal-sub">GLS · Single-Use Token</div>
+      </div>
+      <button class="modal-close" onclick="closeCreate()">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="link-result-host"></div>
+
+      <div class="field-row">
+        <div>
+          <label class="lbl" for="m-name"><span class="t-de">Kundenname</span><span class="t-en">Customer name</span></label>
+          <input class="txt" id="m-name" type="text" placeholder="Max Mustermann">
+        </div>
+        <div>
+          <label class="lbl" for="m-email"><span class="t-de">Kunden-E-Mail</span><span class="t-en">Customer email</span></label>
+          <input class="txt" id="m-email" type="email" placeholder="max@example.com">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <label class="lbl" for="m-ticket">Zendesk-Ticket</label>
+          <input class="txt" id="m-ticket" type="text" placeholder="#412938">
+        </div>
+        <div>
+          <label class="lbl" for="m-expiry"><span class="t-de">Gültig (Tage)</span><span class="t-en">Valid (days)</span></label>
+          <input class="txt" id="m-expiry" type="number" value="7" min="1" max="30">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="m-reason"><span class="t-de">Grund (intern)</span><span class="t-en">Reason (internal)</span></label>
+        <input class="txt" id="m-reason" type="text" placeholder="Defekt: Laufband S-Run">
+        <div class="hint"><span class="t-de">Erscheint nur intern + auf der Bestätigungs-Seite des Kunden.</span><span class="t-en">Shown internally + on the customer confirmation page.</span></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="modal-sub" id="modal-status"></span>
+      <div class="spacer"></div>
+      <button class="btn-sm" onclick="closeCreate()"><span class="t-de">Schließen</span><span class="t-en">Close</span></button>
+      <button class="btn-sm primary" onclick="createLink()">✓ <span class="t-de">Token erzeugen</span><span class="t-en">Generate token</span></button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// DRAFT — mock layer. Replace marked sections with real API at the end.
+// Shares localStorage with abholung.html so flow is testable end-to-end.
+// ════════════════════════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'gls_pickup_tokens_draft';
+let filter = 'all';
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch (_) { return {}; }
+}
+function saveStore(s) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (_) {} }
+
+function toast(msg, kind='success') {
+  const el = document.getElementById('toast');
+  el.className = ''; el.textContent = msg;
+  void el.offsetWidth;
+  el.className = 'show ' + kind;
+  setTimeout(() => el.className = '', 2400);
+}
+
+function setFilter(f) {
+  filter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === f));
+  render();
+}
+
+function effectiveStatus(rec) {
+  if (rec.status === 'ISSUED' && rec.expiresAt && Date.now() > rec.expiresAt) return 'EXPIRED';
+  return rec.status;
+}
+
+function statusLabel(s) {
+  return ({
+    ISSUED:    tr('Offen',         'Open'),
+    OPENED:    tr('Geöffnet',      'Opened'),
+    CONFIRMED: tr('Gebucht',       'Booked'),
+    PICKED_UP: tr('Abgeholt',      'Picked up'),
+    COMPLETED: tr('Abgeschlossen', 'Completed'),
+    EXPIRED:   tr('Abgelaufen',    'Expired'),
+    CANCELLED: tr('Storniert',     'Cancelled')
+  })[s] || s;
+}
+function statusClass(s) {
+  return ({
+    ISSUED:'issued', OPENED:'opened', CONFIRMED:'confirmed', PICKED_UP:'picked',
+    COMPLETED:'completed', EXPIRED:'expired', CANCELLED:'cancelled'
+  })[s] || 'issued';
+}
+
+function fmtDate(ts) {
+  if (!ts) return '—';
+  return new Date(ts).toLocaleString(tr('de-DE','en-GB'), { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function customerLink(token) {
+  return `${location.origin}/abholung.html?t=${encodeURIComponent(token)}`;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function render() {
+  const store = loadStore();
+  const all = Object.entries(store).map(([token, rec]) => ({ token, ...rec, _eff: effectiveStatus(rec) }));
+
+  // Stats
+  const counts = { ISSUED:0, CONFIRMED:0, PICKED_UP:0, EXPIRED:0 };
+  all.forEach(r => { if (counts[r._eff] !== undefined) counts[r._eff]++; });
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card tone-info">
+      <div class="stat-label"><span class="t-de">Offene Links</span><span class="t-en">Open links</span></div>
+      <div class="stat-value info">${counts.ISSUED}</div>
+    </div>
+    <div class="stat-card tone-good">
+      <div class="stat-label"><span class="t-de">Gebuchte Abholungen</span><span class="t-en">Booked pickups</span></div>
+      <div class="stat-value good">${counts.CONFIRMED}</div>
+    </div>
+    <div class="stat-card tone-warn">
+      <div class="stat-label"><span class="t-de">Abgeholt (heute)</span><span class="t-en">Picked up (today)</span></div>
+      <div class="stat-value warn">${counts.PICKED_UP}</div>
+    </div>
+    <div class="stat-card tone-bad">
+      <div class="stat-label"><span class="t-de">Abgelaufen</span><span class="t-en">Expired</span></div>
+      <div class="stat-value bad">${counts.EXPIRED}</div>
+    </div>`;
+
+  // Filter + search
+  const q = (document.getElementById('search')?.value || '').toLowerCase();
+  let rows = all;
+  if (filter !== 'all') rows = rows.filter(r => r._eff === filter);
+  if (q) rows = rows.filter(r =>
+    (r.customer?.name || '').toLowerCase().includes(q) ||
+    (r.customer?.email || '').toLowerCase().includes(q) ||
+    (r.ticket || '').toLowerCase().includes(q) ||
+    r.token.toLowerCase().includes(q));
+  rows.sort((a,b) => (b.issuedAt||0) - (a.issuedAt||0));
+
+  const host = document.getElementById('table-host');
+  if (rows.length === 0) {
+    host.innerHTML = `
+      <div class="notice">
+        <h2><span class="t-de">Keine Einträge</span><span class="t-en">No entries</span></h2>
+        <p><span class="t-de">Erzeuge oben rechts deinen ersten Einmal-Link.</span><span class="t-en">Create your first one-time link top-right.</span></p>
+      </div>`;
+    return;
+  }
+
+  host.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th><span class="t-de">Kunde</span><span class="t-en">Customer</span></th>
+          <th>Ticket</th>
+          <th><span class="t-de">Grund</span><span class="t-en">Reason</span></th>
+          <th>Token</th>
+          <th><span class="t-de">Status</span><span class="t-en">Status</span></th>
+          <th><span class="t-de">Erstellt</span><span class="t-en">Created</span></th>
+          <th><span class="t-de">Aktionen</span><span class="t-en">Actions</span></th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r => `
+            <tr>
+              <td>
+                <div class="cust-name">${escapeHtml(r.customer?.name || '–')}</div>
+                <div class="cust-meta">${escapeHtml(r.customer?.email || '')}</div>
+              </td>
+              <td><span class="cust-meta">${escapeHtml(r.ticket || '–')}</span></td>
+              <td>${escapeHtml(r.reason || '–')}</td>
+              <td><span class="token-pill">${escapeHtml(r.token)}</span></td>
+              <td><span class="badge ${statusClass(r._eff)}">${statusLabel(r._eff)}</span></td>
+              <td><span class="cust-meta">${fmtDate(r.issuedAt)}</span></td>
+              <td style="white-space:nowrap;">
+                <button class="row-action" onclick="copyLink('${r.token}')" title="${tr('Link kopieren','Copy link')}">📋</button>
+                ${r._eff === 'CONFIRMED' || r._eff === 'PICKED_UP' ? `<button class="row-action" onclick="advanceStatus('${r.token}')" title="${tr('Status simulieren','Simulate next status')}">⏭</button>` : ''}
+                <button class="row-action" onclick="openTracking('${r.token}')" title="${tr('Kunden-Ansicht öffnen','Open customer view')}">↗</button>
+                <button class="row-action danger" onclick="cancelToken('${r.token}')" title="${tr('Stornieren','Cancel')}">✕</button>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────
+function openCreate() {
+  document.getElementById('create-modal').classList.add('show');
+  document.getElementById('link-result-host').innerHTML = '';
+  document.getElementById('m-name').focus();
+}
+function closeCreate() {
+  document.getElementById('create-modal').classList.remove('show');
+  ['m-name','m-email','m-ticket','m-reason'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('m-expiry').value = 7;
+  document.getElementById('modal-status').textContent = '';
+}
+
+function genToken() {
+  const a = new Uint8Array(8);
+  (window.crypto || window.msCrypto).getRandomValues(a);
+  return Array.from(a, b => b.toString(36).padStart(2,'0')).join('').slice(0, 14).toUpperCase();
+}
+
+function createLink() {
+  const name   = document.getElementById('m-name').value.trim();
+  const email  = document.getElementById('m-email').value.trim();
+  const ticket = document.getElementById('m-ticket').value.trim();
+  const reason = document.getElementById('m-reason').value.trim();
+  const days   = Math.max(1, Math.min(30, parseInt(document.getElementById('m-expiry').value || '7', 10)));
+
+  if (!name || !email || !ticket) {
+    document.getElementById('modal-status').textContent = tr('Name, E-Mail und Ticket sind Pflicht.', 'Name, email and ticket are required.');
+    return;
+  }
+
+  // TODO ─ API integration point ─────────────────────────────────────────
+  // POST /api/gls-pickup/issue { name, email, ticket, reason, days }
+  //   → server generates token + persists in KV
+  //   → returns { token, expiresAt }
+  const token = genToken();
+  const now = Date.now();
+  const store = loadStore();
+  store[token] = {
+    status: 'ISSUED',
+    customer: { name, email },
+    ticket, reason,
+    issuedAt: now,
+    expiresAt: now + days * 86400_000
+  };
+  saveStore(store);
+  // ─────────────────────────────────────────────────────────────────────
+
+  const link = customerLink(token);
+  document.getElementById('link-result-host').innerHTML = `
+    <div class="link-result">
+      <div class="link-result-label">✓ <span class="t-de">Einmal-Link bereit — bitte an den Kunden senden</span><span class="t-en">One-time link ready — send to customer</span></div>
+      <div class="link-box">
+        <input class="link-input" id="result-link" value="${escapeHtml(link)}" readonly onclick="this.select()">
+        <button class="copy-btn" onclick="copyText('${escapeHtml(link)}')"><span class="t-de">Kopieren</span><span class="t-en">Copy</span></button>
+      </div>
+      <div class="hint" style="margin-top:8px;">
+        <span class="t-de">Gültig bis</span><span class="t-en">Valid until</span>: ${fmtDate(now + days * 86400_000)} · Token: <code style="color:var(--amber);">${token}</code>
+      </div>
+    </div>`;
+  toast(tr('Einmal-Link erzeugt.', 'One-time link created.'));
+  render();
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(
+    () => toast(tr('In Zwischenablage kopiert.', 'Copied to clipboard.')),
+    () => toast(tr('Kopieren fehlgeschlagen.', 'Copy failed.'), 'error')
+  );
+}
+function copyLink(token) { copyText(customerLink(token)); }
+function openTracking(token) { window.open(customerLink(token), '_blank', 'noopener'); }
+
+function cancelToken(token) {
+  if (!confirm(tr('Wirklich stornieren? Der Kunde kann den Link danach nicht mehr verwenden.', 'Really cancel? The customer will no longer be able to use the link.'))) return;
+  // TODO ─ API: POST /api/gls-pickup/cancel { token } ────────────────────
+  const store = loadStore();
+  if (!store[token]) return;
+  store[token].status = 'CANCELLED';
+  saveStore(store);
+  // ─────────────────────────────────────────────────────────────────────
+  toast(tr('Storniert.', 'Cancelled.'));
+  render();
+}
+
+// Demo helper: progress CONFIRMED → PICKED_UP → COMPLETED for testing
+function advanceStatus(token) {
+  const store = loadStore();
+  const r = store[token]; if (!r) return;
+  if (r.status === 'CONFIRMED') r.status = 'PICKED_UP';
+  else if (r.status === 'PICKED_UP') r.status = 'COMPLETED';
+  saveStore(store);
+  toast(tr('Status simuliert.', 'Status simulated.'));
+  render();
+}
+
+// Boot
+window.addEventListener('DOMContentLoaded', render);
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCreate();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Claude Code local
+.claude/
+.claude-*/
+
+# Build / cache
+node_modules/
+.next/
+.vercel/
+dist/
+build/
+
+# Env (never commit secrets)
+.env
+.env.local
+.env.*.local
